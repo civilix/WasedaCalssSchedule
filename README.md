@@ -4,10 +4,10 @@
 pip install selenium
 pip install xlsxwriter
 ```
-(For MacOs, put chromedriver file into /usr/local/bin)
+(For MacOs, also put chromedriver file into /usr/local/bin)
 
 2.
-Enter your MyWaseda username and password in Schedule.py
+Enter MyWaseda username and password in Schedule.py
 
 3.
 ```
