@@ -58,7 +58,7 @@ cell_format = workbook.add_format()
 cell_format.set_text_wrap()
 cell_format.set_bg_color('yellow')
 r = 0
-time_list = ["9:00-10:30","10:40-12:10","Lunch Break","13:00-14:30","14:45-16:15","16:30-18:00","18:15-19:45","19:55-21:25"]
+time_list = ["8:50-10:30","10:40-12:20","Lunch Break","13:10-14:50","15:05-16:45","17:00-18:40","18:55-20:35","20:45-21:35"]
 while r < 8:
 	worksheet1.write(r+1,0,time_list[r])
 	worksheet1.set_row(r+1,60)
