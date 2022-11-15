@@ -1,3 +1,4 @@
+Automaticly use new time period (100-minute period) if system time is later than February 2023.
 # How to use
 1.
 ```
