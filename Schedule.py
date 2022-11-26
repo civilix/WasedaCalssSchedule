@@ -58,7 +58,7 @@ cell_format = workbook.add_format()
 cell_format.set_text_wrap()
 cell_format.set_bg_color('yellow')
 r = 0
-if time.gmtime().tm_year >= 2023 || time.gmtime().tm_mon >= 2:
+if time.gmtime().tm_year >= 2023 and time.gmtime().tm_mon >= 2:
 	time_list = ["8:50-10:30","10:40-12:20","Lunch Break","13:10-14:50","15:05-16:45","17:00-18:40","18:55-20:35","20:45-21:35"]
 
 else:
