@@ -42,11 +42,11 @@ def num(term,day,period,name):
 def format(term,day,period,name):
 	if len(period) == 1:
 		num(term,day,period,name)
-	elif len(day) >= 8:#Tutorial
+	elif len(day) >= 8:#Multiple days
 		sday = day.split()
 		speriod = period.split()
-		format(term,sday[0],speriod[0],name)
-		format(term,sday[1],speriod[1],name)
+		for i in range(len(sday)):
+			format(term,sday[i],speriod[i],name)
 	elif len(day) < 6:#Intensive
 		format(term,day,period[0],name)
 		format(term,day,period[-1],name)
