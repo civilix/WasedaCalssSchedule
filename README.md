@@ -4,6 +4,7 @@ Automaticly use new time period (100-minute period) if system time is later than
 Find the proper chrome web driver from https://chromedriver.chromium.org/downloads
 Put it into the cloned folder for Windows
             /usr/local/bin for Macos
+
 1.
 ```
 pip install selenium
