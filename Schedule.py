@@ -66,17 +66,16 @@ if time.gmtime().tm_year >= 2023 and time.gmtime().tm_mon >= 2:
 else:
 	time_list = ["9:00-10:30","10:40-12:10","Lunch Break","13:00-14:30","14:45-16:15","16:30-18:00","18:15-19:45","19:55-21:25"]
 for i in range(8):
-	worksheet1.write(r+1,0,time_list[r])
-	worksheet1.set_row(r+1,60)
-	worksheet2.write(r+1,0,time_list[r])
-	worksheet2.set_row(r+1,60)
-	r += 1
+	worksheet1.write(i+1,0,time_list[i])
+	worksheet1.set_row(i+1,60)
+	worksheet2.write(i+1,0,time_list[i])
+	worksheet2.set_row(i+1,60)
 days_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 for i in range(7):
-	worksheet1.write(0,c+1,days_list[c])
-	worksheet1.set_column(chr(65+c)+":"+chr(65+c),20)
-	worksheet2.write(0,c+1,days_list[c])
-	worksheet2.set_column(chr(65+c)+":"+chr(65+c),20)
+	worksheet1.write(0,i+1,days_list[i])
+	worksheet1.set_column(chr(65+i)+":"+chr(65+i),20)
+	worksheet2.write(0,i+1,days_list[i])
+	worksheet2.set_column(chr(65+i)+":"+chr(65+i),20)
 driver = webdriver.Chrome()
 driver.get('https://my.waseda.jp/login/login')
 driver.find_element(By.ID, 'infoUrl2').click()
