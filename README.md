@@ -1,7 +1,7 @@
 Automaticly use new time period (100-minute period) if system time is later than February 2023.
 # How to use
 0.
-Find the proper chrome web driver from https://chromedriver.chromium.org/downloads
+Find the proper chrome web driver from https://chromedriver.chromium.org/downloads\n
 Put it into the cloned folder for Windows
             /usr/local/bin for Macos
 
