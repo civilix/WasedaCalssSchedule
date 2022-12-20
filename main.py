@@ -1,6 +1,6 @@
 #####################################################
-id = ""
-pw = ""
+id = "example@xxxx.waseda.jp"
+pw = "password"
 start_date_of_the_first_quarter = "2021-09-28"
 start_date_of_the_second_quarter = "2021-11-28"
 #####################################################
