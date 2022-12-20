@@ -2,7 +2,7 @@ Automaticly use new time period (100-minute period) if system time is later than
 # How to use
 0.
 Find the proper chrome web driver from https://chromedriver.chromium.org/downloads<br />
-Put it into the cloned folder for Windows
+Put it into the cloned folder for Windows<br />
             /usr/local/bin for Macos
 
 1.
