@@ -12,9 +12,9 @@ pip install xlsxwriter
 ```
 
 2.
-Enter MyWaseda username and password in Schedule.py
+Enter MyWaseda username and password in main.py
 
 3.
 ```
-python Schedule.py
+python main.py
 ```
