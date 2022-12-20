@@ -1,8 +1,8 @@
 #####################################################
-id = "example@xxxx.waseda.jp"
-pw = "password"
-start_date_of_the_first_quarter = "2021-09-28"
-start_date_of_the_second_quarter = "2021-11-28"
+id = "xiao@ruri.waseda.jp"
+pw = "Xiao0916"
+start_date_of_the_first_quarter = "2022-09-28"
+start_date_of_the_second_quarter = "2022-11-28"
 #####################################################
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -60,9 +60,9 @@ cell_format = workbook.add_format()
 cell_format.set_text_wrap()
 cell_format.set_bg_color('yellow')
 if time.gmtime().tm_year >= 2023 and time.gmtime().tm_mon >= 2:
-	time_list = ["8:50-10:30","10:40-12:20","Lunch Break","13:10-14:50","15:05-16:45","17:00-18:40","18:55-20:35","20:45-21:35"]
+	time_list = ["08:50-10:30","10:40-12:20","Lunch Break","13:10-14:50","15:05-16:45","17:00-18:40","18:55-20:35","20:45-21:35"]
 else:
-	time_list = ["9:00-10:30","10:40-12:10","Lunch Break","13:00-14:30","14:45-16:15","16:30-18:00","18:15-19:45","19:55-21:25"]
+	time_list = ["09:00-10:30","10:40-12:10","Lunch Break","13:00-14:30","14:45-16:15","16:30-18:00","18:15-19:45","19:55-21:25"]
 for r in range(8):
 	worksheet1.write(r+1,0,time_list[r])
 	worksheet1.set_row(r+1,60)
@@ -105,4 +105,4 @@ while courseno:
 	except:
 		break
 workbook.close()
-# driver.quit()
+driver.quit()
