@@ -2,6 +2,7 @@
 start_date_of_the_first_quarter = "2024-10-04"
 start_date_of_the_second_quarter = "2024-11-26"
 
+import pandas as pd
 import time
 import random
 import datetime
@@ -155,8 +156,9 @@ if __name__ == "__main__":
 	tab2 = tab.ele('registration').click.for_new_tab()
 	tab2.wait.eles_loaded('Course Registration')
 	tab3 = tab2.ele('x:/html/body/p/table[1]/tbody/tr[3]/td[2]/a/font').click.for_new_tab()
-	raw = tab3.ele('x:/html/body/table[4]/tbody/tr/td/table/tbody/tr[3]/td/table[2]/tbody/tr/td/table[3]/tbody').text
-	print(raw)
+	text = tab3.ele('x:/html/body/table[4]/tbody/tr/td/table/tbody/tr[3]/td/table[2]/tbody/tr/td/table[3]/tbody').text
+	with open('text.txt', 'w') as f:
+		f.write(text)
 	fq = start_date_of_the_first_quarter
 	sq = start_date_of_the_second_quarter
 	courseno = 1
