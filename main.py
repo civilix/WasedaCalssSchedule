@@ -155,6 +155,8 @@ if __name__ == "__main__":
 	tab2 = tab.ele('registration').click.for_new_tab()
 	tab2.wait.eles_loaded('Course Registration')
 	tab3 = tab2.ele('x:/html/body/p/table[1]/tbody/tr[3]/td[2]/a/font').click.for_new_tab()
+	raw = tab3.ele('x:/html/body/table[4]/tbody/tr/td/table/tbody/tr[3]/td/table[2]/tbody/tr/td/table[3]/tbody').text
+	print(raw)
 	fq = start_date_of_the_first_quarter
 	sq = start_date_of_the_second_quarter
 	courseno = 1
@@ -173,7 +175,7 @@ if __name__ == "__main__":
 			logging.error(f"Error processing course number {courseno}: {str(e)}")
 			break
 	time.sleep(1)
-	tab.close()
-	tab2.close()
-	tab3.close()
+	# tab.close()
+	# tab2.close()
+	# tab3.close()
 	logging.info("Program execution completed")
