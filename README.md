@@ -5,10 +5,6 @@
 
 
 # How to use
-0.
-Find the proper chrome web driver from https://chromedriver.chromium.org/downloads<br />
-Put it into the cloned folder for Windows<br />
-            /usr/local/bin for Macos
 
 1.
 ```
