@@ -4,18 +4,3 @@
 
 
 
-# How to use
-
-1.
-```
-pip install selenium
-pip install xlsxwriter
-```
-
-2.
-Enter MyWaseda username and password in main.py
-
-3.
-```
-python main.py
-```
