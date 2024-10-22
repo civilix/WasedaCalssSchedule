@@ -1,12 +1,9 @@
-
-start_date_of_the_first_quarter = "2024-10-04"
-start_date_of_the_second_quarter = "2024-11-26"
-
 import pandas as pd
 import time
 import random
 import datetime
 from DrissionPage import Chromium
+import re
 import logging
 
 # Configure logging at the beginning of the file
@@ -68,33 +65,17 @@ def hex(digits):
 def uid():
 	return hex(8) + "-" + hex(4) + "-" + hex(4) + "-" + hex(4) + "-" + hex(12)
 
-def calendar(term,day,period,name,room,fq,sq):
-	logging.info(f"Adding course to calendar: {name}, Term: {term}, Day: {day}, Period: {period}")
-	# find the first class of the semester
-	if term == 1:
-		first = datetime.date.fromisoformat(fq)
-	else:
-		first = datetime.date.fromisoformat(sq)
-	no = first.weekday() + 1
+def calendar(day,period,name,room,start_date,end_date):
+	no = start_date.weekday() + 1
 	gap = (7 + day - no) % 7
-	firstclass = first + datetime.timedelta(days=gap)
-	# find the end of the semester
-	if term == 1:
-		lastclass = datetime.date.fromisoformat(sq) - datetime.timedelta(days=1)
-	else:
-		if firstclass.month >= 8:
-			lastclassyear = firstclass.year + 1
-			lastclass = datetime.date(lastclassyear,1,31)
-		else:
-			lastclassyear = firstclass.year
-			lastclass = datetime.date(lastclassyear,7,31)
+	firstclass = start_date + datetime.timedelta(days=gap)
 	#find the time 
 	time_list = ["08:50-10:30","10:40-12:20","13:10-14:50","15:05-16:45","17:00-18:40","18:55-20:35","20:45-21:35"]
 	coursetime = time_list[int(period) - 1]
 	begin = time_list[int(period) - 1].split("-")[0].replace(":","")
 	end = time_list[int(period) - 1].split("-")[1].replace(":","")
 	firstclassstr = firstclass.__str__().replace("-","")
-	lastclassstr = lastclass.__str__().replace("-","")
+	lastclassstr = end_date.__str__().replace("-","")
 	#read the ics file
 	try:
 		with open('course.ics', 'r') as f:# if the file exists
@@ -147,6 +128,15 @@ def get_course_info(row, column):
 	except Exception as e:
 		logging.error(f"Failed to get course info: Row {row}, Column {column}, Error: {str(e)}")
 		raise
+def extract_and_convert_to_date(date_str):
+    match = re.search(r'(\w+)\s+(\d+)', date_str)
+    if match:
+        month = match.group(1)
+        day = int(match.group(2))
+        month_num = datetime.datetime.strptime(month, "%B").month
+        return datetime.date(academic_year, month_num, day)
+    else:
+        return None
 
 if __name__ == "__main__":
 	tab = Chromium().latest_tab
@@ -161,26 +151,35 @@ if __name__ == "__main__":
 	columns = texts[:12]
 	data = [texts[i:i+12] for i in range(12, len(texts), 12)]
 	df = pd.DataFrame(data, columns=columns)
-	
-	fq = start_date_of_the_first_quarter
-	sq = start_date_of_the_second_quarter
-	courseno = 1
-	while courseno:
-		try:
-			logging.info(f"Processing course number {courseno}")
-			term = get_course_info(courseno, 1)
-			day = get_course_info(courseno, 2)
-			period = get_course_info(courseno, 3)
-			name = get_course_info(courseno, 6)
-			room = get_course_info(courseno, 9)			
-			course = Course(term, day, period, name, room)
-			course.format()
-			courseno += 1
-		except Exception as e:
-			logging.error(f"Error processing course number {courseno}: {str(e)}")
-			break
-	time.sleep(1)
-	# tab.close()
-	# tab2.close()
-	# tab3.close()
-	logging.info("Program execution completed")
+	#remove on-demand courses
+	df = df[~df['Period'].str.contains('On demand')]
+	tab.get('https://www.waseda.jp/top/en/about/work/organizations/academic-affairs-division/academic-calendar')
+	academic_year = tab.ele('@@class=mod-title').text[:4]
+	spring_quarter_begin, fall_quarter_begin = tab.eles('Classes begin').get.texts()
+	spring_quarter_end, fall_quarter_end= tab.eles('First term ends').get.texts()
+	summer_quarter_begin, winter_quarter_begin = tab.eles('Second term begins').get.texts()
+	summer_quarter_end, winter_quarter_end = tab.eles('Classes end').get.texts()
+	spring_quarter_begin = extract_and_convert_to_date(spring_quarter_begin)
+	spring_quarter_end = extract_and_convert_to_date(spring_quarter_end)
+	summer_quarter_begin = extract_and_convert_to_date(summer_quarter_begin)
+	summer_quarter_end = extract_and_convert_to_date(summer_quarter_end)
+	winter_quarter_begin = extract_and_convert_to_date(winter_quarter_begin)
+	winter_quarter_end = extract_and_convert_to_date(winter_quarter_end)
+	fall_quarter_begin = extract_and_convert_to_date(fall_quarter_begin)
+	fall_quarter_end = extract_and_convert_to_date(fall_quarter_end)
+	def calendar(day,period,name,room,start_date,end_date)
+	for i in range(len(df)):
+		if df.loc[i, 'Term'] == 'spring quarter':
+			calendar(df.loc[i, 'Day'],df.loc[i, 'Period'],df.loc[i, 'Course Title'],df.loc[i, 'Classroom'],spring_quarter_begin,spring_quarter_end)
+		elif df.loc[i, 'Term'] == 'summer quarter':
+			calendar(df.loc[i, 'Day'],df.loc[i, 'Period'],df.loc[i, 'Course Title'],df.loc[i, 'Classroom'],summer_quarter_begin,summer_quarter_end)
+		elif df.loc[i, 'Term'] == 'winter quarter':
+			calendar(df.loc[i, 'Day'],df.loc[i, 'Period'],df.loc[i, 'Course Title'],df.loc[i, 'Classroom'],winter_quarter_begin,winter_quarter_end)
+		elif df.loc[i, 'Term'] == 'fall quarter':
+			calendar(df.loc[i, 'Day'],df.loc[i, 'Period'],df.loc[i, 'Course Title'],df.loc[i, 'Classroom'],fall_quarter_begin,fall_quarter_end)
+		elif df.loc[i, 'Term'] == 'spring semester':
+			calendar(df.loc[i, 'Day'],df.loc[i, 'Period'],df.loc[i, 'Course Title'],df.loc[i, 'Classroom'],spring_quarter_begin,summer_quarter_end)
+		elif df.loc[i, 'Term'] == 'fall semester':
+			calendar(df.loc[i, 'Day'],df.loc[i, 'Period'],df.loc[i, 'Course Title'],df.loc[i, 'Classroom'],fall_quarter_begin,winter_quarter_end)
+		
+
