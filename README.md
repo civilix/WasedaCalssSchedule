@@ -4,25 +4,16 @@
 
 # Feature
 - Automatically logs into Waseda University's course registration system
-- Retrieves course information including term, day, period, course title, and classroom
-- Extracts academic calendar dates for different quarters and semesters
-- Generates an ICS file with course schedules compatible with most calendar applications
+- Extracts academic calendar dates for different quarters and semesters from Waseda's  homepage
+- Generates an ICS file with course schedules compatible with iOS
 - Handles various course formats including:
   - Single day courses
   - Multiple day courses
   - Intensive courses
-- Supports both quarter and semester systems
-- Excludes on-demand courses from the calendar
-- Implements logging for better debugging and error tracking
-- Utilizes web scraping techniques to gather necessary informati
+- EXCLUDES on-demand courses from the calendar
 
 
 # How to use
-0.
-Find the proper chrome web driver from https://chromedriver.chromium.org/downloads<br />
-Put it into the cloned folder for Windows<br />
-            /usr/local/bin for Macos
-
 1.
 ```
 pip install -r requirements.txt
