@@ -149,16 +149,19 @@ def get_course_info(row, column):
 		raise
 
 if __name__ == "__main__":
-	logging.info("Program execution started")
 	tab = Chromium().latest_tab
 	tab.get('https://my.waseda.jp/login/login')
-	logging.info("Opened Waseda University login page")
 	tab2 = tab.ele('registration').click.for_new_tab()
 	tab2.wait.eles_loaded('Course Registration')
 	tab3 = tab2.ele('x:/html/body/p/table[1]/tbody/tr[3]/td[2]/a/font').click.for_new_tab()
-	text = tab3.ele('x:/html/body/table[4]/tbody/tr/td/table/tbody/tr[3]/td/table[2]/tbody/tr/td/table[3]/tbody').text
-	with open('text.txt', 'w') as f:
-		f.write(text)
+	eles = tab3.eles('@@class=decisionboxf') 
+	texts = []
+	for ele in eles.filter.displayed():
+		texts.append(ele.text)
+	columns = texts[:12]
+	data = [texts[i:i+12] for i in range(12, len(texts), 12)]
+	df = pd.DataFrame(data, columns=columns)
+	
 	fq = start_date_of_the_first_quarter
 	sq = start_date_of_the_second_quarter
 	courseno = 1
