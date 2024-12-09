@@ -207,18 +207,40 @@ if __name__ == "__main__":
     df = df[~df['Period'].str.contains('On demand')]
     tab.get('https://www.waseda.jp/top/en/about/work/organizations/academic-affairs-division/academic-calendar')
     academic_year = tab.ele('@@class=mod-title').text[:4]
-    spring_quarter_begin, fall_quarter_begin = tab.eles('Classes begin').get.texts()
-    spring_quarter_end, fall_quarter_end= tab.eles('First term ends').get.texts()
-    summer_quarter_begin, winter_quarter_begin = tab.eles('Second term begins').get.texts()
-    summer_quarter_end, winter_quarter_end = tab.eles('Classes end').get.texts()
-    spring_quarter_begin = extract_and_convert_to_date(spring_quarter_begin)
-    spring_quarter_end = extract_and_convert_to_date(spring_quarter_end)
-    summer_quarter_begin = extract_and_convert_to_date(summer_quarter_begin)
-    summer_quarter_end = extract_and_convert_to_date(summer_quarter_end)
-    winter_quarter_begin = extract_and_convert_to_date(winter_quarter_begin)
-    winter_quarter_end = extract_and_convert_to_date(winter_quarter_end)
-    fall_quarter_begin = extract_and_convert_to_date(fall_quarter_begin)
-    fall_quarter_end = extract_and_convert_to_date(fall_quarter_end)
+    # 获取所有学期的开始和结束日期文本
+    quarter_dates = {
+        'spring': {'begin': None, 'end': None},
+        'summer': {'begin': None, 'end': None},
+        'fall': {'begin': None, 'end': None}, 
+        'winter': {'begin': None, 'end': None}
+    }
+    
+    (quarter_dates['spring']['begin'], 
+     quarter_dates['fall']['begin']) = tab.eles('Classes begin').get.texts()
+     
+    (quarter_dates['spring']['end'],
+     quarter_dates['fall']['end']) = tab.eles('First term ends').get.texts()
+     
+    (quarter_dates['summer']['begin'],
+     quarter_dates['winter']['begin']) = tab.eles('Second term begins').get.texts()
+     
+    (quarter_dates['summer']['end'],
+     quarter_dates['winter']['end']) = tab.eles('Classes end').get.texts()
+
+    for quarter in quarter_dates:
+        for date_type in ['begin', 'end']:
+            quarter_dates[quarter][date_type] = extract_and_convert_to_date(
+                quarter_dates[quarter][date_type]
+            )
+            
+    spring_quarter_begin = quarter_dates['spring']['begin']
+    spring_quarter_end = quarter_dates['spring']['end']
+    summer_quarter_begin = quarter_dates['summer']['begin'] 
+    summer_quarter_end = quarter_dates['summer']['end']
+    fall_quarter_begin = quarter_dates['fall']['begin']
+    fall_quarter_end = quarter_dates['fall']['end']
+    winter_quarter_begin = quarter_dates['winter']['begin']
+    winter_quarter_end = quarter_dates['winter']['end']
     for i in range(len(df)):
         term = df.loc[i, 'Term']
         day = df.loc[i, 'Day']
